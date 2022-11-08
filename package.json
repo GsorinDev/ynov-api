@@ -1,0 +1,17 @@
+{
+  "name": "apiNode",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "node server-raw.js",
+    "nodemon" : "nodemon server-raw.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
