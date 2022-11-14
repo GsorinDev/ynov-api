@@ -20,10 +20,13 @@ export async function create(ctx) {
 
         const {error} = todoValidationSchema.validate(ctx.request.body)
 
+        let json = ctx.request.body
+        json.createdAt = Date.now()
+
         if (error) {
             throw new Error(error)
         } else {
-            Todos.create(ctx.request.body)
+            Todos.create(json)
             ctx.status = 204
         }
 
@@ -52,7 +55,10 @@ export async function findOne(ctx) {
 export async function updateOne(ctx) {
     try {
         console.log(ctx.params.id)
-        await Todos.findOneAndUpdate(ctx.params.id, ctx.request.body)
+        let json = ctx.request.body
+        json.updatedAt = Date.now()
+
+        await Todos.findOneAndUpdate(ctx.params.id, json)
         ctx.status = 204
     } catch (e) {
         ctx.badRequest({message : e.message})

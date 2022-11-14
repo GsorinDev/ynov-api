@@ -17,7 +17,13 @@ const todosSchemas = new Schema({
     price: {
         type: Number,
         required: true
-    }
+    },
+    createdAt: {
+        type: Date
+    },
+    updatedAt: {
+        type: Date
+    },
 })
 
 const Todos = mongoose.model('Todos', todosSchemas)
