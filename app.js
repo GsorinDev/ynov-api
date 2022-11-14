@@ -1,59 +1,17 @@
+import '#config/database.js'
 import Koa from 'koa'
-import Router from '@koa/router'
+import { API_V1_ROUTER } from '#routes/index.js'
 import bodyParser from 'koa-bodyparser'
+import Todos from '#components/todos/todos-model.js'
+import respond from 'koa-respond'
 
 const app = new Koa()
-const router = new Router()
-const todo = [
-    {
-        id: 1,
-        title: 'Acheter des patates'
-    },
-    {
-        id: 2,
-        title: 'Acheter des pommes'
-    },
-    {
-        id: 3,
-        title: 'Acheter des bananes'
-    }
-]
-
-
-router.get('/', (ctx, next) => {
-    ctx.body = 'Hello !'
-})
-
-router.get('/api/todos', (ctx, next) => {
-    ctx.body = todo
-    })
-    .get('/api/todos/:id', (ctx,next) => {
-        ctx.body = todo.find((todo) => todo.id === +ctx.params.id)
-    })
-    .put('/api/todos/:id', (ctx, next) => {
-        const objWithIdIndex = todo.findIndex((todo) => todo.id === +ctx.params.id);
-        todo[objWithIdIndex].title = ctx.request.body.title
-        ctx.status = 204
-    })
-    .delete('/api/todos/:id', (ctx, next) => {
-        const objWithIdIndex = todo.findIndex((todo) => todo.id === +ctx.params.id);
-        todo.splice(objWithIdIndex,1)
-        ctx.status = 204
-    }).post('/api/todos', (ctx) => {
-        todo.push({
-            id: todo.length+1,
-            title: ctx.request.body.title
-        })
-        ctx.status = 204
-    })
-
 
 app
     .use(bodyParser())
-    .use(router.routes())
-    .use(router.allowedMethods())
-
-
+    .use(respond())
+    .use(API_V1_ROUTER.routes())
+    .use(API_V1_ROUTER.allowedMethods())
 
 app.listen(process.env.PORT, () =>
 {
