@@ -18,13 +18,8 @@ const tasksSchema = new Schema({
         type: Number,
         required: true
     },
-    createdAt: {
-        type: Date
-    },
-    updatedAt: {
-        type: Date
-    },
-})
+
+}, {timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }})
 
 const Tasks = mongoose.model('Tasks', tasksSchema)
 

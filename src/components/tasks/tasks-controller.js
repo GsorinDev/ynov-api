@@ -19,14 +19,10 @@ export async function create(ctx) {
         })
 
         const {error} = taskSchemaValidator.validate(ctx.request.body)
-
-        let json = ctx.request.body
-        json.createdAt = Date.now()
-
         if (error) {
             throw new Error(error)
         } else {
-            Tasks.create(json)
+            Tasks.create(ctx.request.body)
             ctx.status = 204
         }
 
@@ -54,11 +50,7 @@ export async function findOne(ctx) {
 
 export async function updateOne(ctx) {
     try {
-        console.log(ctx.params.id)
-        let json = ctx.request.body
-        json.updatedAt = Date.now()
-
-        await Tasks.findOneAndUpdate(ctx.params.id, json)
+        await Tasks.findOneAndUpdate(ctx.params.id,  ctx.request.body)
         ctx.status = 204
     } catch (e) {
         ctx.badRequest({message : e.message})
