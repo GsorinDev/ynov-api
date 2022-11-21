@@ -2,7 +2,7 @@ import '#config/database.js'
 import Koa from 'koa'
 import { API_V1_ROUTER } from '#routes/index.js'
 import bodyParser from 'koa-bodyparser'
-import Todos from '#components/todos/todos-model.js'
+import Tasks from '#components/tasks/tasks-model.js'
 import respond from 'koa-respond'
 
 const app = new Koa()
