@@ -9,5 +9,6 @@ tasks.get('/', Tasks.index)
     .put('/:id', Tasks.updateOne)
     .delete('/:id', Tasks.deleteOne)
     .post('/', Tasks.create)
+    .get('/list/:listId', Tasks.findAllByListId)
 
 export default tasks

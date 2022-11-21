@@ -3,7 +3,10 @@ import Koa from 'koa'
 import { API_V1_ROUTER } from '#routes/index.js'
 import bodyParser from 'koa-bodyparser'
 import Tasks from '#components/tasks/tasks-model.js'
+import List from "#components/list/list-model.js";
+import User from "#components/user/user-model.js";
 import respond from 'koa-respond'
+import '#config/maildev.js'
 
 const app = new Koa()
 

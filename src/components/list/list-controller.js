@@ -1,9 +1,10 @@
-import Tasks from "#components/tasks/tasks-model.js";
+import List from "#components/list/list-model.js";
 import Joi from 'joi'
+import TasksModel from "#components/tasks/tasks-model.js";
 
 export async function index (ctx) {
     try {
-        ctx.body = await Tasks.find()
+        ctx.body = await List.find()
     } catch (e) {
         ctx.badRequest({message: e.message})
     }
@@ -13,16 +14,13 @@ export async function create(ctx) {
     try {
         const taskSchemaValidator = Joi.object({
             title: Joi.string().required(),
-            description: Joi.string().optional(),
-            done: Joi.boolean().optional(),
-            list: Joi.string().required()
         })
 
         const {error} = taskSchemaValidator.validate(ctx.request.body)
         if (error) {
             throw new Error(error)
         } else {
-            Tasks.create(ctx.request.body)
+            List.create(ctx.request.body)
             ctx.status = 204
         }
 
@@ -33,7 +31,7 @@ export async function create(ctx) {
 
 export async function deleteOne(ctx) {
     try {
-        await Tasks.findOneAndRemove(ctx.params.id)
+        await List.findOneAndRemove(ctx.params.id)
         ctx.status = 204
     } catch (e) {
         ctx.badRequest({message : e.message})
@@ -42,15 +40,10 @@ export async function deleteOne(ctx) {
 
 export async function findOne(ctx) {
     try {
-        ctx.body = await Tasks.findById(ctx.params.id)
-    } catch (e) {
-        ctx.badRequest({message : e.message})
-    }
-}
+        const list = await List.findById(ctx.params.id).lean()
+        list.tasks = await TasksModel.findByListId(ctx.params.id)
 
-export async function findAllByListId(ctx) {
-    try {
-        ctx.body = await Tasks.findByListId(ctx.params.listId)
+        ctx.body = list
     } catch (e) {
         ctx.badRequest({message : e.message})
     }
@@ -58,7 +51,7 @@ export async function findAllByListId(ctx) {
 
 export async function updateOne(ctx) {
     try {
-        await Tasks.findOneAndUpdate(ctx.params.id,  ctx.request.body)
+        await List.findOneAndUpdate(ctx.params.id,  ctx.request.body)
         ctx.status = 204
     } catch (e) {
         ctx.badRequest({message : e.message})
