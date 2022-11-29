@@ -7,6 +7,11 @@ const listSchema = new Schema({
         type: String,
         required: true,
     },
+    createBy: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    }
 }, {timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }})
 
 const List = mongoose.model('List', listSchema)
