@@ -29,6 +29,12 @@ const userSchema = new Schema({
             default: false
         },
         validation_email_token: String
+    },
+    code: {
+        type:Number,
+        select:false,
+        default: "",
+        required:false,
     }
 
 }, {timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }})
@@ -44,6 +50,9 @@ userSchema.method({
             expiresIn: process.env.JWT_EXPIRES_IN
         })
         return token
+    },
+    generateVerificationCode() {
+        return customAlphabet(numbers, 8)()
     }
 })
 

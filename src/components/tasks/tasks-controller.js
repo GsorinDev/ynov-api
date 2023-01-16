@@ -79,13 +79,25 @@ export async function findAllByListId(ctx) {
 
 export async function updateOne(ctx) {
     try {
-        const task = await Tasks.findById(ctx.params.id)
-        if(task.createBy.toString() !== ctx.state.user._id.toString()) {
-            ctx.unauthorized()
+        const taskSchemaValidator = Joi.object({
+            title: Joi.string().required(),
+            description: Joi.string().optional(),
+            done: Joi.boolean().optional(),
+        })
+
+        const {error} = taskSchemaValidator.validate(ctx.request.body)
+        if (error) {
+            throw new Error(error)
         } else {
-            await Tasks.findOneAndUpdate(task._id,  ctx.request.body)
-            ctx.status = 204
+            const task = await Tasks.findById(ctx.params.id)
+            if(task.createBy.toString() !== ctx.state.user._id.toString()) {
+                ctx.unauthorized()
+            } else {
+                await Tasks.findOneAndUpdate(task._id,  ctx.request.body)
+                ctx.status = 204
+            }
         }
+
     } catch (e) {
         ctx.badRequest({message : e.message})
     }

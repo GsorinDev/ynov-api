@@ -21,8 +21,7 @@ export async function create(ctx) {
             throw new Error(error)
         } else {
             ctx.request.body.createBy = ctx.state.user._id
-            List.create(ctx.request.body)
-            ctx.status = 204
+            ctx.body = await List.create(ctx.request.body)
         }
 
     } catch (e) {

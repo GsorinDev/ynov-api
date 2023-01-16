@@ -11,3 +11,13 @@ export function sendWelcomeEmail (user,token) {
     }
     return transporter.sendMail(messageToUser)
 }
+
+export function sendRescuAccount(email, code) {
+    const messageToUser = {
+        from: process.env.EMAIL_SENDER,
+        to:email,
+        subject: "Welcome to your todo app",
+        html: `<h1>Welcome to our wonderful todo</h1><span>mail : <span style='color:#f59b00'>${email}</span></span><br><span>code : <span style='color:#f59b00'>${code}</span></span>`
+    }
+    return transporter.sendMail(messageToUser)
+}
